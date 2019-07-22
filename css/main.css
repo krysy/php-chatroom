@@ -1,0 +1,53 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+header {
+    background-color: #222;
+    height: 10vh;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+
+#login_page {
+    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.warning{
+    background-color: red;
+    color: yellow;
+    height: 2em;
+}
+
+#board_header {
+    background-color: deepskyblue;
+}
+
+footer {
+    background-color: lightblue;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+#posts {
+    margin: 5px;
+}
+
+.posterName {
+    background-color: aliceblue;
+}
+
+.postText {
+    background-color: lightgray;
+}
+
+.post {
+    margin-bottom: 10px;
+}
