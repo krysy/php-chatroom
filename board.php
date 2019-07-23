@@ -9,12 +9,12 @@
             header("Location: login.php", true, 301);
             exit();
         }
-        $link = mysqli_connect("127.0.0.1", $_ENV["PHP_MYSQL_USER"], $_ENV["PHP_MYSQL_PASSWORD"], $_ENV["PHP_MYSQL_DATABASE"]);
+        $link = mysqli_connect("127.0.0.1", $_SERVER["PHP_MYSQL_USER"], $_SERVER["PHP_MYSQL_PASSWORD"], $_SERVER["PHP_MYSQL_DATABASE"]);
         if (isset($_POST["actionSubmitPost"])) {
             if ($_POST["postText"] !== ""){
                 //echo addslashes($_POST["postText"]);
-                $statement = $link->prepare("INSERT INTO posts (poster, text) VALUES ( ?, ?)");
-                $statement->bind_param("ss" ,$_SESSION["username"], addslashes($_POST["postText"]));
+                $statement = $link->prepare("INSERT INTO posts (text, posterId) VALUES ( ?, ?)");
+                $statement->bind_param("ss" , addslashes($_POST["postText"]),$_SESSION["userid"]);
                 $statement->execute();
                 header("Location: board.php", true, 301);
                 exit();
@@ -46,7 +46,7 @@
             </form>
         </header>";
 
-        $statement = $link->prepare("SELECT text, poster FROM posts");
+        $statement = $link->prepare("SELECT posts.text, users.username as poster FROM posts INNER JOIN users ON posts.posterId=users.id");
         $statement->execute();
         $result = $statement->get_result();
 

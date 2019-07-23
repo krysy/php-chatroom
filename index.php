@@ -5,17 +5,20 @@
        exit();
     } else {
         if (isset($_POST["actionLogin"])) {
-            $link = mysqli_connect("127.0.0.1", $_ENV["PHP_MYSQL_USER"], $_ENV["PHP_MYSQL_PASSWORD"], $_ENV["PHP_MYSQL_DATABASE"]);
+            $link = mysqli_connect("127.0.0.1", $_SERVER["PHP_MYSQL_USER"], $_SERVER["PHP_MYSQL_PASSWORD"], $_SERVER["PHP_MYSQL_DATABASE"]);
            //+ $link = mysqli_connect("127.0.0.1", "debian-sys-maint", "8yyDgy9ov9J5ydB0", "uniproj1");
             // create new user
-            $statement = $link->prepare("SELECT password_hash FROM users WHERE username=?");
+            $statement = $link->prepare("SELECT password_hash, id FROM users WHERE username=?");
             $statement->bind_param("s" ,$_POST["username"]);
             $statement->execute();
-            $result = $statement->get_result()->fetch_all()[0][0];
+            $result = $statement->get_result()->fetch_assoc();
 
-            if (password_verify($_POST["password"], $result)) {
+            //get_result()->fetch_all()[0][0];
+
+            if (password_verify($_POST["password"], $result["password_hash"])) {
                 $_SESSION["use"] = true;
                 $_SESSION["username"] = $_POST["username"];
+                $_SESSION["userid"] = $result["id"];
                 header("Location: index.php", true, 301);
                 exit();
             } else {
